@@ -1,42 +1,84 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
-#define MAX_STRINGS 50
-#define MAX_LENGT 50
+#include <ctype.h>
+#define MAX_STRINGS 3
+#define MAX_LENGT 20
 
-void toUpper(char str []){
-       for(int i=0; str[i]; i++){
-            str[i]=toupper(str[i]);
+ void toUppercase(char str []){
+        for(int i=0; str[i]; i++){
+            str[i]= toupper (str[i]);
     }
     }
+    
+ void buscarLibro(int cantidadLibros,
+                 char titulo[][20],
+                 char autor[][20],
+                 char genero[][20],
+                 char codigoISBN[][20],
+                 int stock[],
+                 float precioUnitario[]){
+         
+         char clave[20];
+         int i,encontrado=0;
+
+         printf("\nIngrese el titulo, autor, genero, o ISBN a buscar: \n");
+         getchar(); //limpia el bufer
+         fgets(clave, sizeof(clave), stdin); //fgets busca el maximo de caracteres iingresados
+         toUppercase(clave);
+         clave[strcspn(clave, "\n")]=0;
+
+         for(i=0; i < cantidadLibros; i++){
+                if (strstr(titulo[i], clave)|| strstr(autor[i], clave) ||
+                strstr(genero[i], clave) || strstr(codigoISBN[i], clave)){
+
+                    printf("\n Resultado: %s | %s | %s| %s | $%.2f USD | STOCK: %d\n",
+                titulo[i], autor[i], genero[i], codigoISBN[i], (float)precioUnitario[i], stock[i]);
+            encontrado = 1;
+            break;
+                }
+         }
+         if (!encontrado)
+        printf("Libro no encontrado.\n");
+     } 
+     
 int main(){
 
-int cantidadLibros;
-  char titulo[cantidadLibros][100];
-  char autor[cantidadLibros][100];
-  char genero[cantidadLibros][100];
-  char codigoISBN [cantidadLibros][100];
+    // Declaración de array y asignacion de valor
+  int cantidadLibros;
+    printf("\n Ingrese la cantidad de libros: "); // movemos al inicio, porque asi podemos darle un valor al array
+  scanf(" %d", &cantidadLibros);
+  
+  char titulo[cantidadLibros][20];
+  char autor[cantidadLibros][20];
+  char genero[cantidadLibros][20];
+  char codigoISBN [cantidadLibros][20];
   int stock[cantidadLibros];
-  int precioUnitario[cantidadLibros];
+  float precioUnitario[cantidadLibros];
   int i=0;
   float ganancia[cantidadLibros];
-  char str;
 
-   printf("\n Ingrese la cantidad de libros: ");
-  scanf(" %d", &cantidadLibros);
-
-  for(i=0; i = cantidadLibros-1; i++){
-
-        printf("Ingrese el titulo a buscar: ");
+    // Ingreso y guardado de datos
+  for(i=0; i < cantidadLibros; i++){
+        printf("Ingrese el titulo: ");
         scanf(" %s", titulo[i]);
-        toUpper(titulo[cantidadLibros]);
+        toUppercase(titulo[i]);
 
-        printf("Ingrese el autor a buscar: ");
+        printf("Ingrese el autor: ");
         scanf(" %s", autor[i]);
+        toUppercase(autor[i]);
 
-        printf("Ingrese el genero a buscar: ");
+        printf("Ingrese el genero: ");
         scanf(" %s", genero[i]);
+        toUppercase(genero[i]);
 
         do {
             printf("Ingrese el codigo ISBN del libro: ");
@@ -47,63 +89,34 @@ int cantidadLibros;
         scanf(" %d", &stock[i]);
 
         printf("Ingrese el precio del libro: ");
-        scanf(" %d", &precioUnitario[cantidadLibros]);
+        scanf(" %f", &precioUnitario[i]);
+        
+       ganancia[i]= precioUnitario[i]*stock[i];
+        printf("\n Ganancia neta: %.2f\n",ganancia[i]);
 
-       //do{
-        (ganancia[i]=precioUnitario[i]*stock[i]);
-        printf("\n Ganancia neta: %f",ganancia[i]);
-
-           // if (ganancia[i]<0)
-            //printf("\033[1;32m%2f\033[0m\n","ganancia negativa"); //rojo
-           // else
-           // printf("\033[1;33m%2f\033[0m\n","ganancia positiva"); //verde
-       //}while(strlen(ganancia[cantidadLibros])==0);
-  }
-
-                for (i=0; i= cantidadLibros; i++) {
-                printf (" %s \n", titulo[i]);
-                printf("Autor: %s\n", autor[i]);
-                printf("Género: %s\n", genero[i]);
-                printf("ISBN: %s\n", codigoISBN[i]);
-                printf("Stock: %d\n", stock[i]);
-                printf("Precio unitario: %d\n", precioUnitario[i]);
-                printf("Ganancia neta: %.2f\n", ganancia[i]);
-            }
-
-     /*void mostrarTabla(){
-         printf("\n%-25s %-20s %-30s %-12s %-8s %-6s %-10s\n",
-                "TITULO", "AUTOR", "GENERO", "ISBN", "PRECIO", "STOCK", "GANANCIA");
-
-            for(i=0; i<=cantidadLibros; i++){"\n%-25s %-20s %-30s %-12s %-8s %-6s %-10s\n",
-                printf(titulo[i], autor[i], genero[i],codigoISBN[i], stock[i],precioUnitario[i]);
-
-                if (ganancia[i]<0)
-                    printf("\033[1;32m%2f\033[0m\n","ganancia negativa"); //rojo
-                    else
-                    printf("\033[1;33m%2f\033[0m\n","ganancia positiva"); //verde
-                }
-     }
-*/
-    void buscarLibro(){
-         char clave[20];
-         int encontrado=0;
-
-         printf("Ingrese el titulo, autor, genero, o ISBN a buscar: ");
-         clave[strcspn(clave, "\n")]=0;
-
-         for(i=0; i<=cantidadLibros; i++){
-                if (strstr(titulo[i], clave)|| strstr(autor[i], clave) ||
-                strstr(genero[i], clave) || strstr(codigoISBN[i], clave)==0){
-
-                    printf("\n Resultado: %s | %s | %s | $%.2f USD | STOCK: %d\n",
-                titulo[i], autor[i], genero[i], precioUnitario[i], stock[i]);
-            encontrado = 1;
-            break;
-                }
-         }
-         if (!encontrado)
-        printf("Libro no encontrado.\n");
-     }
+            if (ganancia[i]<0)
+            printf("\033[1;31m Ganancia: %.2f\033[0m\n", ganancia[i]);//rojo
+            else
+           printf("\033[1;33m Ganancia: %.2f\033[0m\n", ganancia[i]); //verde
+    }
+        //Muestra de libros existentes
+        printf("\n Stock de libros \n");
+        
+        printf("\n%-25s %-20s %-30s %-12s %-8s %-6s %-10s\n",
+        "TÍTULO", "AUTOR", "GÉNERO", "ISBN", "PRECIO", "STOCK", "GANANCIA");
+        for (int i=0; i < cantidadLibros; i++){
+         printf("%-25s %-20s %-27s %-12s %-10.2f %-6d %-9.2f\n",
+           titulo[i], autor[i], genero[i], codigoISBN[i], 
+           precioUnitario[i], stock[i], ganancia[i]);
+        }
+        
+        //Busqueda de libros existentes
+    printf("\n Busqueda de libros\n");
+    // Funcion para busqueda de libro
+    // Realizamos una funcion porque con un ciclo for se deben declarar mas variables x cada busqueda
+   
+ buscarLibro(cantidadLibros, titulo, autor,genero,codigoISBN,stock, precioUnitario);
+ 
  return 0;
 
   }
